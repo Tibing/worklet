@@ -1,0 +1,59 @@
+<div id=example class=multi-border>CSS Paint API is Awesome</div>
+
+<style>
+#example {
+  max-width: 100px;
+  --border-top-width: 10;
+  --border-right-width: 20;
+  --border-bottom-width: 30;
+  --border-left-width: 400;
+  --border-top-color: red aquamarine;
+  --border-right-color: lightskyblue green lightskyblue green yellow blue;
+  --border-bottom-color: deepskyblue cyan lightgoldenrodyellow;
+  --border-left-color: gold orange red pink green red white blue beige magenta darkmagenta;
+}
+.multi-border {
+  border: solid 0;
+  border-image: paint(border-colors);
+  border-image-slice:
+    var(--border-top-width)
+    var(--border-right-width)
+    var(--border-bottom-width)
+    var(--border-left-width);
+  border-width:
+    calc(var(--border-top-width) * 1px)
+    calc(var(--border-right-width) * 1px)
+    calc(var(--border-bottom-width) * 1px)
+    calc(var(--border-left-width) * 1px);
+}
+</style>
+
+<script>
+[
+  '--border-top-color',
+  '--border-right-color',
+  '--border-bottom-color',
+  '--border-left-color',
+].map(name => {
+  CSS.registerProperty({
+    name,
+    syntax: '<color>+',
+    initialValue: 'currentcolor',
+  })
+});
+
+[
+  '--border-top-width',
+  '--border-right-width',
+  '--border-bottom-width',
+  '--border-left-width',
+].map(name => {
+  CSS.registerProperty({
+    name,
+    syntax: '<number>',
+    initialValue: '0',
+  })
+});
+
+CSS.paintWorklet.addModule('rainbow-border-worklet.js');
+</script>
